@@ -98,7 +98,7 @@ void FBase::map_down_sub(FBase *pFb,const char *subtype) {
 void FBase::get_pathx(char *nam,const char *ch) {
    char cnam[256];
    ifstream fin;
-
+   bool found_path = false;
    if(eflag==2) {
       strcpy(cnam,"path_");
       strcat(cnam,pnam);
@@ -108,12 +108,20 @@ void FBase::get_pathx(char *nam,const char *ch) {
          strcpy(cnam,"path");
          fin.open(cnam,ios::in);
          if(!fin.is_open()) {
-            cout << "Path file for type " << type << " does not exist!" << endl;
-            exit(1);
+            // If cannot find path_Ab3P file, get WordData path from env
+            char *f = getenv("AB3P_WORDDATA_PATH");
+	             if (strlen(f) == 0) {
+               cout << "Path file for type " << type << "_" << cnam << " does not exist!" << endl;
+               exit(1);
+	          }
+            strcpy(nam,f);
+            found_path = true;
          }
       }
-      fin.getline(nam,256);
-      fin.close();
+      if (!found_path) {
+         fin.getline(nam,256);
+         fin.close();
+      }
    }
    else if(eflag) {
       strcpy(cnam,"path_");
@@ -131,7 +139,7 @@ void FBase::get_pathx(char *nam,const char *ch) {
          strcat(cnam,name);
          fin.open(cnam,ios::in);
          if(!fin.is_open()) {
-	    fin.clear();
+	          fin.clear();
             strcpy(cnam,"path_");
             strcat(cnam,type);
             fin.open(cnam,ios::in);
@@ -140,14 +148,22 @@ void FBase::get_pathx(char *nam,const char *ch) {
                strcpy(cnam,"path");
                fin.open(cnam,ios::in);
                if(!fin.is_open()) {
-                  cout << "Path file for type " << type << " does not exist!" << endl;
-                  exit(1);
+                  // If cannot find path_Ab3P file, get WordData path from env
+                  char *f = getenv("AB3P_WORDDATA_PATH");
+	                if (strlen(f) == 0) {
+                     cout << "Path file for type " << type << "_" << cnam << " does not exist!" << endl;
+                     exit(1);
+	                }
+                  strcpy(nam,f);
+                  found_path = true;
                }
             }
          }
       }
-      fin.getline(nam,256);
-      fin.close();
+      if (!found_path) {
+         fin.getline(nam,256);
+         fin.close();
+      }
    }
    else {
       strcpy(nam,path);
