@@ -109,7 +109,7 @@ void FBase::get_pathx(char *nam,const char *ch) {
          fin.open(cnam,ios::in);
          if(!fin.is_open()) {
             // If cannot find path_Ab3P file, get WordData path from env
-            char *f = getenv("AB3P_WORDDATA_PATH");
+            char *f = getenv("AB3P_WORDDATA_DIRPATH");
 	             if (strlen(f) == 0) {
                cout << "Path file for type " << type << "_" << cnam << " does not exist!" << endl;
                exit(1);
@@ -149,7 +149,7 @@ void FBase::get_pathx(char *nam,const char *ch) {
                fin.open(cnam,ios::in);
                if(!fin.is_open()) {
                   // If cannot find path_Ab3P file, get WordData path from env
-                  char *f = getenv("AB3P_WORDDATA_PATH");
+                  char *f = getenv("AB3P_WORDDATA_DIRPATH");
 	                if (strlen(f) == 0) {
                      cout << "Path file for type " << type << "_" << cnam << " does not exist!" << endl;
                      exit(1);
